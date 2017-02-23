@@ -20,7 +20,9 @@ describe("Calculator", function(){
 	var non_neg;
 	
 	beforeEach(function(){
-		calculator = new Calculator();
+		var mock = true;
+		var financeApi = new YahooFinanceApi(mock);
+		calculator = new Calculator(financeApi);
 		flag = false;
 		value = 0;
 		
@@ -210,16 +212,18 @@ describe("Calculator", function(){
 				var symbol = result.query.results.quote.symbol;
 				expect(symbol).toBeDefined();
 				expect(symbol).toBe(name);
+				var ask = result.query.results.quote.Ask;
+				expect(ask).not.toBe(null);
 			}).not.toThrow();			
 		});
 		
-		it("should throw exception for 'GOO fjfkejkfjekfjek', as not a quote symbol", function(){
+		it("should throw exception for 'GOOfjfkejkfjekfjek', as not a quote symbol", function(){
 			var value = "";
 			expect(function(){
-				var name = 'GOO fjfkejkfjekfjek';
+				var name = 'GOOfjfkejkfjekfjek';
 				var result = calculator.getQuotesByName(name);			
-				var symbol = result.query.results.quote.symbol;
-				expect(symbol).not.toBeDefined();
+				var ask = result.query.results.quote.Ask;
+				expect(ask).toBe(null);
 			}).not.toThrow();			
 		});
 	});

@@ -1,4 +1,5 @@
-function Calculator() {
+function Calculator(financeApi) {
+	this.financeApi = financeApi;
 }
 
 Calculator.prototype.Plus = function(a, b) {
@@ -101,7 +102,9 @@ Calculator.prototype.getQuotesByName = function(name) {
 	if(!(typeof name === 'string')){
 		throw new Error("The quote name should be string");
 	}	
-	var quote = JSON.parse('{"empty" : "empty"}');
+	
+	return this.financeApi.Get(name);
+	/* var quote = JSON.parse('{"empty" : "empty"}');
 	var query = 'select * from yahoo.finance.quotes where symbol in ("'+name+'")';	
 	jQuery.ajaxSetup({async:false});	
 	$.get("https://query.yahooapis.com/v1/public/yql",
@@ -115,5 +118,5 @@ Calculator.prototype.getQuotesByName = function(name) {
 		quote = data;		
 	});
 	jQuery.ajaxSetup({async:true});
-    return quote;	
+    return quote; */	
 }
